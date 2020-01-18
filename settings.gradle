@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name='Mad_camp_week4'
