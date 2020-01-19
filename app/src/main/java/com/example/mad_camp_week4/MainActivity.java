@@ -29,6 +29,17 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import androidx.appcompat.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+
 public class MainActivity extends AppCompatActivity {
     private final String userId = "01"; // 해당 유저의 아이디
     private List<CafeResult> lstCafeResult = new ArrayList<>(); // 오늘 날짜에 해당하는 row들을 다받아올것임
@@ -43,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
     private final int RESULT_CODE = 1;
     private ArrayList<String> lstResultRowId = new ArrayList<>(); // 선택되지 않은 아이템을 삭제하기 위한 rowId를 저장하는 리스트
     private ArrayList<String> lstDeleteRowId = new ArrayList<>(); // 일괄 선택된 애들을 모두 지움
+    ImageView cup_of_coffee;
+    ImageButton setting_btn;
+    ImageButton add_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +72,52 @@ public class MainActivity extends AppCompatActivity {
 
         // 해당 버튼을 누르면 서버에서 오늘 날짜의 데이터를 받아와야 함
         refreshBtn = findViewById(R.id.refresh_btn);
-        // resultTextView = findViewById(R.id.textView);
+        cup_of_coffee = findViewById(R.id.cup_of_coffee);
+        setting_btn = findViewById(R.id.setting_btn);
+        add_btn = findViewById(R.id.add_btn);
+
         refreshBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 setInitial();
+            }
+        });
+
+        cup_of_coffee.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                View dialogView = getLayoutInflater().inflate(R.layout.today_coffee_dialog, null);
+                //final EditText nameEditText = (EditText)dialogView.findViewById(R.id.name);
+                //final EditText NicknameEditText = (EditText)dialogView.findViewById(R.id.nickname);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setView(dialogView);
+                AlertDialog dialog = builder.create();
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        setting_btn.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, SettingActivity.class));
+            }
+        });
+
+        add_btn.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                View dialogView = getLayoutInflater().inflate(R.layout.coffee_add_dialog, null);
+                //TODO: how to implement viewpager inside Dialog!
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setView(dialogView);
+                AlertDialog dialog = builder.create();
+
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
             }
         });
 

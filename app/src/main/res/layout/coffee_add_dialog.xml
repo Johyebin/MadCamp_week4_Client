@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:attrs="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/rounded"
     android:orientation="vertical">
 
     <Button
@@ -11,6 +12,7 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_gravity="right"
         android:background="@android:color/transparent"
         android:fontFamily="@font/onprettynight"
         android:text="확인"
@@ -21,7 +23,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/coffeeAddPager"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="350dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/add_coffee" />
@@ -31,11 +33,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_gravity="center"
         android:layout_marginTop="15dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/coffeeAddPager"
-        app:layout_constraintVertical_bias="0.0"
         app:piv_animationType="worm"
         app:piv_dynamicCount="true"
         app:piv_interactiveAnimation="true"
@@ -45,4 +49,4 @@
         attrs:piv_padding="12dp"
         attrs:piv_radius="8dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
