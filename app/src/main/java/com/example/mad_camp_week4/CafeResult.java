@@ -1,64 +1,84 @@
 package com.example.mad_camp_week4;
 
-public class CafeResult {
-    private String trad_date; // 결제 날짜
-    private String trad_time; // 결제 시간
-    private int user_id; // 사용자 id
-    private String good_id; // 상품 id
-    private String good_name; // 상품 이름
-    private String cafe_name;  // 카페 이름
+import java.io.Serializable;
+
+public class CafeResult implements Serializable {
+   private String rowId; // 행식별id
+   private String tradDate; // 결제날짜
+   private String tradTime; // 결제시간
+   private String drinkTime; // 섭취시간
+   private String goodId; // 상품id
+   private String goodName; // 상품이름
+   private String cafeName; // 카페이름
+   private String multipleFlag; // 일괄결제 플래그
 
     // Constructor
     public CafeResult() {
     }
 
     // Getter
-    public String getTrad_date() {
-        return trad_date;
+    public String getRowId() {
+        return rowId;
     }
 
-    public String getTrad_time() {
-        return trad_time;
+    public String getTradDate() {
+        return tradDate;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public String getTradTime() {
+        return tradTime;
     }
 
-    public String getGood_id() {
-        return good_id;
+    public String getDrinkTime() {
+        return drinkTime;
     }
 
-    public String getGood_name() {
-        return good_name;
+    public String getGoodId() {
+        return goodId;
     }
 
-    public String getCafe_name() {
-        return cafe_name;
+    public String getGoodName() {
+        return goodName;
     }
 
+    public String getCafeName() {
+        return cafeName;
+    }
+
+    public String getMultipleFlag() {
+        return multipleFlag;
+    }
     // Setter
-    public void setTrad_date(String trad_date) {
-        this.trad_date = trad_date;
+
+    public void setRowId(String rowId) {
+        this.rowId = rowId;
     }
 
-    public void setTrad_time(String trad_time) {
-        this.trad_time = trad_time;
+    public void setTradDate(String tradDate) {
+        this.tradDate = tradDate;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setTradTime(String tradTime) {
+        this.tradTime = tradTime;
     }
 
-    public void setGood_id(String good_id) {
-        this.good_id = good_id;
+    public void setDrinkTime(String drinkTime) {
+        this.drinkTime = drinkTime;
     }
 
-    public void setGood_name(String good_name) {
-        this.good_name = good_name;
+    public void setGoodId(String goodId) {
+        this.goodId = goodId;
     }
 
-    public void setCafe_name(String cafe_name) {
-        this.cafe_name = cafe_name;
+    public void setGoodName(String goodName) {
+        this.goodName = goodName;
+    }
+
+    public void setCafeName(String cafeName) {
+        this.cafeName = cafeName;
+    }
+
+    public void setMultipleFlag(String multipleFlag) {
+        this.multipleFlag = multipleFlag;
     }
 }
