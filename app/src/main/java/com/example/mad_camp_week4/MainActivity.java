@@ -2,6 +2,7 @@ package com.example.mad_camp_week4;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -55,15 +56,7 @@ public class MainActivity extends AppCompatActivity {
         add_btn.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View v) {
-                View dialogView = getLayoutInflater().inflate(R.layout.coffee_add_dialog, null);
-                //TODO: how to implement viewpager inside Dialog!
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setView(dialogView);
-                AlertDialog dialog = builder.create();
-
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
+                startActivity(new Intent(MainActivity.this, AddActivity.class));
             }
         });
 

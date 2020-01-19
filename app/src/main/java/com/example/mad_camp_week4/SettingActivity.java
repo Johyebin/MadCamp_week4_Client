@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ public class SettingActivity extends AppCompatActivity {
     LinearLayout favorite_cafe_title;
     LinearLayout favorite_menu_title;
     LinearLayout coffee_time_title;
+    TextView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,14 @@ public class SettingActivity extends AppCompatActivity {
         favorite_cafe_title = findViewById(R.id.favorite_cafe_title);
         favorite_menu_title = findViewById(R.id.favorite_menu_title);
         coffee_time_title = findViewById(R.id.coffee_time_title);
+        back = findViewById(R.id.setting_back);
+
+        back.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         favorite_cafe_title.setOnClickListener(new Button.OnClickListener() {
             @Override
