@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         setting_btn = findViewById(R.id.setting_btn);
         add_btn = findViewById(R.id.add_btn);
 
+        setInitial();
+
         refreshBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -129,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
     // 오늘 날짜를 받아올 함수 // 창훈이 작품 (currentMillis는 배신하지 않아 )
     public void getCurrentDate(){
-        long time = System.currentTimeMillis() + 9 * 60 * 60 * 1000;
+        long time = System.currentTimeMillis() ;
         SimpleDateFormat dayTime = new SimpleDateFormat("yyyyMMdd");
         String str = dayTime.format(new Date(time));
         currentDate = str;
@@ -176,6 +178,11 @@ public class MainActivity extends AppCompatActivity {
                 lstDeleteRowId.add(lstCafeResult.get(i).getRowId());
             }
         }
+
+       if(lstDeleteRowId.size()==0) {
+           Toast.makeText(MainActivity.this,"Nothing to Select",Toast.LENGTH_SHORT).show();
+           return;
+       }
                 // 해당 리스트에 저장된 모든 데이터를 지움
                 deleteRow(lstDeleteRowId);
 
@@ -214,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             upLoadRow(lstCafeUpload);// 변경한 row들을 다시 서버에 업로드
+            //TODO:
         }
     }
 
