@@ -20,8 +20,11 @@ public class AddPagerAdapter extends FragmentPagerAdapter {
                 FragmentStarbucks tab2 = new FragmentStarbucks();
                 return tab2;
             case 2:
-                FragmentEtc tab3 = new FragmentEtc();
+                FragmentGongcha tab3 = new FragmentGongcha();
                 return tab3;
+            case 3:
+                FragmentEtc tab4 = new FragmentEtc();
+                return tab4;
             default:
                 return null;
         }
@@ -29,6 +32,6 @@ public class AddPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 }

@@ -22,7 +22,7 @@ public class AddActivity extends AppCompatActivity {
         setContentView(R.layout.coffee_add_activity);
 
         viewPager = findViewById(R.id.coffeeAddPager);
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(4);
         AddPagerAdapter addPagerAdapter = new AddPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(addPagerAdapter);
         back = findViewById(R.id.add_back);
