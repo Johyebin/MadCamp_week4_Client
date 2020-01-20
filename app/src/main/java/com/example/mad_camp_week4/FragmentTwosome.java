@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
@@ -28,6 +29,14 @@ public class FragmentTwosome extends Fragment {
         gridView = view.findViewById(R.id.twosome_menu_view);
         MenuAdapter twosomeAdapter = new MenuAdapter(requireContext(), twosomeMenu);
         gridView.setAdapter(twosomeAdapter);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Menu menu = (Menu) parent.getAdapter().getItem(position);
+
+            }
+        });
 
         return view;
     }

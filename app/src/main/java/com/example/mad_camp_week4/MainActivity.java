@@ -30,6 +30,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -89,8 +91,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 View dialogView = getLayoutInflater().inflate(R.layout.today_coffee_dialog, null);
-                //final EditText nameEditText = (EditText)dialogView.findViewById(R.id.name);
-                //final EditText NicknameEditText = (EditText)dialogView.findViewById(R.id.nickname);
+                RecyclerView coffeeView = findViewById(R.id.today_coffee_view);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setView(dialogView);
