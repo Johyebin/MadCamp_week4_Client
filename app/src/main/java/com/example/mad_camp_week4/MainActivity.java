@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private String BASE_URL = "http://192.249.19.251:0180";
     private Gson gson = new Gson();
     private ImageButton refreshBtn;
-    private String currentDate; // 현재 시간을 저장하기 위한 전역변수
+    private String currentDate,currentTime; // 현재 시간을 저장하기 위한 전역변수
     private ArrayList<CafeResult> lstCafeSelect = new ArrayList<>(); // 일괄업로드된 항목을 식별하기 위해 뷰를 뿌려줄 배열
     private ArrayList<CafeResult> lstCafeUpload = new ArrayList<>();
     private final int RESULT_CODE = 1; //일괄 결제건에 대한 코드
@@ -119,16 +119,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setInitial() {
-        getCurrentDate(); // 현재 시간 세팅
+        getCurrentDateTime(); // 현재 시간 세팅
         getDataWithCheck(); // 디비에서 사용자의 데이터를 검사하고 가져오기
     }
 
     // 오늘 날짜를 받아올 함수 // 창훈이 작품 (currentMillis는 배신하지 않아 )
-    public void getCurrentDate() {
+    public void getCurrentDateTime() {
         long time = System.currentTimeMillis(); //한국 시간 기준
-        SimpleDateFormat dayTime = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat dayTime = new SimpleDateFormat("yyyyMMdd hhmm");
         String str = dayTime.format(new Date(time));
-        currentDate = str;
+        String arr[] = str.split(" ");
+        currentDate = arr[0];
+        currentTime = arr[1];
     }
 
     public void getDataWithCheck() {
@@ -256,7 +258,23 @@ public class MainActivity extends AppCompatActivity {
 
         }
         if (requestCode == RESULT_CODE_ADD && data != null) {
-            Toast.makeText(MainActivity.this, "Added: ".concat(data.getStringExtra("goodID")), Toast.LENGTH_LONG).show();
+           // Toast.makeText(MainActivity.this, "Added: ".concat(data.getStringExtra("goodID")), Toast.LENGTH_LONG).show();
+            ArrayList<CafeResult> tmpList = new ArrayList<>();
+            String tmpString = data.getStringExtra("goodId");
+            GoodsItem tmpGoods = goodsDatabase.findGoods(tmpString);
+            CafeResult tmpCafeResult = new CafeResult();
+            tmpCafeResult.setRowId("-1");
+            getCurrentDateTime();
+            tmpCafeResult.setTradDate(currentDate);
+            tmpCafeResult.setTradTime("-1");
+            tmpCafeResult.setDrinkTime(currentTime);
+            tmpCafeResult.setGoodId(tmpGoods.getGoodId());
+            tmpCafeResult.setGoodName(tmpGoods.getGoodName());
+            tmpCafeResult.setCafeName(tmpGoods.getCafeName());
+            tmpCafeResult.setMultipleFlag("0");
+            tmpList.add(tmpCafeResult);
+            upLoadRow(tmpList);
+            setContents();
         }
     }
 
