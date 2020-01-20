@@ -38,6 +38,8 @@ public class FavoriteCoffeeDialogFragment extends DialogFragment {
             case "스타벅스":
                 goodsItemArrayList = goodsDB.getCafeItemArrayList("스타벅스");
                 break;
+            case "공차":
+                goodsItemArrayList = goodsDB.getCafeItemArrayList("공차");
         }
     }
 

@@ -25,6 +25,11 @@ public class AddActivity extends AppCompatActivity {
         viewPager.setOffscreenPageLimit(4);
         AddPagerAdapter addPagerAdapter = new AddPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(addPagerAdapter);
+        String favoriteCafe = getSharedPreferences("caffe", MODE_PRIVATE).getString("caffe", "");
+
+        if(favoriteCafe.equals("스타벅스")) viewPager.setCurrentItem(1);
+        if(favoriteCafe.equals("공차")) viewPager.setCurrentItem(2);
+
         back = findViewById(R.id.add_back);
 
         back.setOnClickListener(new Button.OnClickListener(){

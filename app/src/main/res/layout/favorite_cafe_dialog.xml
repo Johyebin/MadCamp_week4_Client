@@ -70,7 +70,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/etc_logo"
+            android:id="@+id/gongcha_logo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -80,14 +80,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/round_cup" />
+                app:srcCompat="@drawable/gongcha_logo" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/simple"
                 android:gravity="center"
-                android:text="기타" />
+                android:text="공차" />
         </LinearLayout>
     </LinearLayout>
 
