@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private GoodsDatabase goodsDatabase = new GoodsDatabase(); // GoodsItem을 조작하기 위한 객체 생성
     private ArrayList<GoodsItem> goodsList = new ArrayList<>(); // 뷰를 뿌리기 위한 GoodsItem을 저장할 배열
     public int caffeine, price; // 내부내부에서 접근시 access안되므로 변경하기
+    public boolean appStartFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,11 +176,15 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // multiple flag가 없으면 리턴
-        if (lstDeleteRowId.size() == 0) {
-            Toast.makeText(MainActivity.this, "Nothing to Select", Toast.LENGTH_SHORT).show();
+        if (lstDeleteRowId.size() == 0 && appStartFlag == false) {
+            appStartFlag = true;
             return;
         }
+        if(lstDeleteRowId.size() == 0 && appStartFlag == true){
+            Toast.makeText(MainActivity.this, "일괄 결제건이 없습니다", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         // 해당 리스트에 저장된 모든 데이터를 지움
         deleteRow(lstDeleteRowId);
 
