@@ -41,7 +41,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
-    private final String userId = "01"; // 해당 유저의 아이디
     private List<CafeResult> lstCafeResult = new ArrayList<>(); // 오늘 날짜에 해당하는 row들을 다받아올것임
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
@@ -54,14 +53,21 @@ public class MainActivity extends AppCompatActivity {
     private final int RESULT_CODE = 1;
     private ArrayList<String> lstResultRowId = new ArrayList<>(); // 선택되지 않은 아이템을 삭제하기 위한 rowId를 저장하는 리스트
     private ArrayList<String> lstDeleteRowId = new ArrayList<>(); // 일괄 선택된 애들을 모두 지움
-    ImageView cup_of_coffee;
-    ImageButton setting_btn;
-    ImageButton add_btn;
+    private ImageView cup_of_coffee;
+    private ImageButton setting_btn, add_btn;
+    private GoodsDatabase goodsDatabase = new GoodsDatabase(); // GoodsItem을 조작하기 위한 객체 생성
+    private ArrayList<GoodsItem> goodsList = new ArrayList<>(); // 뷰를 뿌리기 위한 GoodsItem을 저장할 배열
+    public int caffeine,price; // 내부내부에서 접근시 access안되므로 변경하기
+    public TextView caffeineTextView, priceTextView;
+    private View dialogView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dialogView = getLayoutInflater().inflate(R.layout.today_coffee_dialog, null);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -75,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
         cup_of_coffee = findViewById(R.id.cup_of_coffee);
         setting_btn = findViewById(R.id.setting_btn);
         add_btn = findViewById(R.id.add_btn);
+        caffeineTextView = dialogView.findViewById(R.id.caffeine_content_edit);
+        priceTextView = dialogView.findViewById(R.id.price_edit);
 
         setInitial();
 
@@ -88,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
         cup_of_coffee.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view){
-                View dialogView = getLayoutInflater().inflate(R.layout.today_coffee_dialog, null);
                 //final EditText nameEditText = (EditText)dialogView.findViewById(R.id.name);
                 //final EditText NicknameEditText = (EditText)dialogView.findViewById(R.id.nickname);
 
@@ -144,8 +151,9 @@ public class MainActivity extends AppCompatActivity {
                         lstCafeResult.add(tmpList.get(i));
                     }
                     // 데이터를 세팅하고 해당 리스트를 가지고 있는 어댑터가 그린 뷰를 update하는 코드
-                    // updateView();
                     checkMultipleFlag();
+                    setContents();
+                    updateView();
                 }
                 else if( response.code() == 404){
                     Toast.makeText(getApplicationContext(),"Download Failed",Toast.LENGTH_LONG).show();
@@ -171,10 +179,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+       // multiple flag가 없으면 리턴
        if(lstDeleteRowId.size()==0) {
-           Toast.makeText(MainActivity.this,"Nothing to Select",Toast.LENGTH_SHORT).show();
-           return;
-       }
+            Toast.makeText(MainActivity.this,"Nothing to Select",Toast.LENGTH_SHORT).show();
+            return;
+        }
                 // 해당 리스트에 저장된 모든 데이터를 지움
                 deleteRow(lstDeleteRowId);
 
@@ -182,6 +191,45 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("initialArray",lstCafeSelect);
                 startActivityForResult(intent,RESULT_CODE);
 
+    }
+
+    // 일괄건이 없거나 일괄건을 처리하고 돌아온 후, 결과값으로 리스트 세팅 + 카페인 수치 계산
+    // 변경해서 올린 디비로 조작
+    public void setContents(){
+
+        HashMap<String,String> map = new HashMap<>();
+        map.put("tradDate",currentDate);
+
+        Call<ArrayList<CafeResult>> call = retrofitInterface.executePull(map);
+        call.enqueue(new Callback<ArrayList<CafeResult>>() {
+            @Override
+            public void onResponse(Call<ArrayList<CafeResult>> call, Response<ArrayList<CafeResult>> response) {
+                if (response.code() == 200) {
+                    lstCafeResult.clear(); // 원래 저장되어 있던 배열 비우고,오늘 치꺼 모두 받음
+                    goodsList.clear();
+
+                    ArrayList<CafeResult> tmpList = response.body();
+                    for(int i=0;i<tmpList.size();i++) {
+                        lstCafeResult.add(tmpList.get(i));
+                    }
+                    for(int i=0;i<lstCafeResult.size();i++){
+                        // 어댑터가 지녀야 할 배열 == goodsList
+                        GoodsItem goodsItem = goodsDatabase.findGoods(lstCafeResult.get(i).getGoodId());
+                        goodsList.add(goodsItem);
+                    }
+                    caffeine = goodsDatabase.getCaffeineContent(goodsList);
+                    price = goodsDatabase.getPrice(goodsList);
+                }
+                else if( response.code() == 404){
+                    Toast.makeText(getApplicationContext(),"Download Failed",Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<CafeResult>> call, Throwable t) {
+                Toast.makeText(MainActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     // 선택된 결과리스트를 받아와서 해당 객체의 플래그를 0으로 세팅한 후 다시 업로드
@@ -300,6 +348,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateView(){
-        // 새로고침해서 얻어온 데이터로 뷰를 다시 그리는 코드
+        // List Setting
+        caffeineTextView.setText(""+caffeine);
+        priceTextView.setText(""+price);
     }
 }

@@ -85,10 +85,10 @@ public class GoodsDatabase {
     }
 
     // 카페인양을 계산해서 반환하는 메소드
-    public int getCaffeineContent(ArrayList<CafeResult> argsList){
+    public int getCaffeineContent(ArrayList<GoodsItem> argsList){
         int sum = 0;
 
-        ArrayList<CafeResult> tmpList = argsList;
+        ArrayList<GoodsItem> tmpList = argsList;
         for(int i=0;i<tmpList.size();i++){
             String goodId = tmpList.get(i).getGoodId();
             for(int j=0;j<goodsItemArrayList.size();j++)
@@ -100,10 +100,10 @@ public class GoodsDatabase {
 
 
     // 가격을 계산해서 반환하는 메소드
-    public int getPrice(ArrayList<CafeResult> argsList){
+    public int getPrice(ArrayList<GoodsItem> argsList){
         int sum = 0;
 
-        ArrayList<CafeResult> tmpList = argsList;
+        ArrayList<GoodsItem> tmpList = argsList;
         for(int i=0;i<tmpList.size();i++){
             String goodId = tmpList.get(i).getGoodId();
             for(int j=0;j<goodsItemArrayList.size();j++)
