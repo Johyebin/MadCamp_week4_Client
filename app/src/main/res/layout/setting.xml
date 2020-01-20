@@ -70,7 +70,6 @@
             <!-- text에 모니터링하는 어플 목록 띄워주기 -->
         </LinearLayout>
     </LinearLayout>
-
     <LinearLayout
         android:id="@+id/favorite_menu_title"
         android:layout_width="match_parent"
