@@ -213,6 +213,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                     caffeine = goodsDatabase.getCaffeineContent(goodsList);
                     price = goodsDatabase.getPrice(goodsList);
+                    if(caffeine>400){
+                        cup_of_coffee.setImageResource(R.drawable.coffee_spill);
+                    } else {
+                        cup_of_coffee.setImageResource(R.drawable.round_cup);
+                    }
                 } else if (response.code() == 404) {
                     Toast.makeText(getApplicationContext(), "Download Failed", Toast.LENGTH_LONG).show();
                 }

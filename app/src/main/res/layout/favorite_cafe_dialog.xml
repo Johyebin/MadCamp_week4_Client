@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/coffee_cup" />
+                app:srcCompat="@drawable/round_cup" />
 
             <TextView
                 android:layout_width="match_parent"
