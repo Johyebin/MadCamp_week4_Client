@@ -63,21 +63,11 @@ public class MainActivity extends AppCompatActivity {
     private GoodsDatabase goodsDatabase = new GoodsDatabase(); // GoodsItem을 조작하기 위한 객체 생성
     private ArrayList<GoodsItem> goodsList = new ArrayList<>(); // 뷰를 뿌리기 위한 GoodsItem을 저장할 배열
     public int caffeine,price; // 내부내부에서 접근시 access안되므로 변경하기
-    public TextView caffeineTextView, priceTextView;
-    private View dialogView;
-    private RecyclerView todayCoffeeView = null;
-    private TodayCoffeeAdapter todayCoffeeAdapter = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        dialogView = getLayoutInflater().inflate(R.layout.today_coffee_dialog, null);
-        todayCoffeeView = dialogView.findViewById(R.id.today_coffee_view);
-        todayCoffeeAdapter = new TodayCoffeeAdapter(goodsList);
-        todayCoffeeView.setAdapter(todayCoffeeAdapter);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -91,8 +81,6 @@ public class MainActivity extends AppCompatActivity {
         cup_of_coffee = findViewById(R.id.cup_of_coffee);
         setting_btn = findViewById(R.id.setting_btn);
         add_btn = findViewById(R.id.add_btn);
-        caffeineTextView = dialogView.findViewById(R.id.caffeine_content_edit);
-        priceTextView = dialogView.findViewById(R.id.price_edit);
 
         setInitial();
 
@@ -106,6 +94,15 @@ public class MainActivity extends AppCompatActivity {
         cup_of_coffee.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view){
+                View dialogView = getLayoutInflater().inflate(R.layout.today_coffee_dialog, null);
+                RecyclerView todayCoffeeView = dialogView.findViewById(R.id.today_coffee_view);
+                TodayCoffeeAdapter todayCoffeeAdapter = new TodayCoffeeAdapter(goodsList);
+                todayCoffeeView.setAdapter(todayCoffeeAdapter);
+                TextView caffeineTextView = dialogView.findViewById(R.id.caffeine_content_edit);
+                TextView priceTextView = dialogView.findViewById(R.id.price_edit);
+                caffeineTextView.setText(""+caffeine);
+                priceTextView.setText(""+price);
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setView(dialogView);
                 AlertDialog dialog = builder.create();
@@ -160,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                     // 데이터를 세팅하고 해당 리스트를 가지고 있는 어댑터가 그린 뷰를 update하는 코드
                     checkMultipleFlag();
                     setContents();
-                    updateView();
+                   // updateView();
                 }
                 else if( response.code() == 404){
                     Toast.makeText(getApplicationContext(),"Download Failed",Toast.LENGTH_LONG).show();
@@ -217,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
                     ArrayList<CafeResult> tmpList = response.body();
                     for(int i=0;i<tmpList.size();i++) {
-                        lstCafeResult.add(tmpList.get(i));
+                            lstCafeResult.add(tmpList.get(i));
                     }
                     for(int i=0;i<lstCafeResult.size();i++){
                         // 어댑터가 지녀야 할 배열 == goodsList
@@ -256,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = data;
             ArrayList<String> tmpList = intent.getStringArrayListExtra("resultArray"); // 선택된 것들은 flag를 0으로 바꾸고 올리기
             for(String s: tmpList)
-                lstResultRowId.add(s);
+                lstResultRowId.add(s); // update
 
             for(int i=0;i<lstResultRowId.size();i++) {
                 String tmpId = lstResultRowId.get(i);
@@ -268,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             upLoadRow(lstCafeUpload);// 변경한 row들을 다시 서버에 업로드
-            //TODO: update lists for today coffee dialog
+//            todayCoffeeAdapter.notifyDataSetChanged();
         }
         if(requestCode == RESULT_CODE_ADD && data != null){
             Toast.makeText(MainActivity.this, "Added: ".concat(data.getStringExtra("goodID")), Toast.LENGTH_LONG).show();
@@ -355,11 +352,5 @@ public class MainActivity extends AppCompatActivity {
         }
         if(deleteCount == tmpList.size())
             Toast.makeText(MainActivity.this,"Delete successfully",Toast.LENGTH_LONG).show();
-    }
-
-    public void updateView(){
-        // List Setting
-        caffeineTextView.setText(""+caffeine);
-        priceTextView.setText(""+price);
     }
 }
