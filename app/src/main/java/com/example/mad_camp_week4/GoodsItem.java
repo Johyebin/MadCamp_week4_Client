@@ -1,6 +1,9 @@
 package com.example.mad_camp_week4;
 
-public class GoodsItem {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class GoodsItem implements Parcelable {
     private String goodId;
     private String goodName;
     private String cafeName;
@@ -20,6 +23,27 @@ public class GoodsItem {
         this.caffeineContent = caffeineContent;
         this.imgSrc = imgSrc;
     }
+
+    protected GoodsItem(Parcel in) {
+        goodId = in.readString();
+        goodName = in.readString();
+        cafeName = in.readString();
+        price = in.readString();
+        caffeineContent = in.readString();
+        imgSrc = in.readInt();
+    }
+
+    public static final Creator<GoodsItem> CREATOR = new Creator<GoodsItem>() {
+        @Override
+        public GoodsItem createFromParcel(Parcel in) {
+            return new GoodsItem(in);
+        }
+
+        @Override
+        public GoodsItem[] newArray(int size) {
+            return new GoodsItem[size];
+        }
+    };
 
     // Getter
     public String getGoodId() {
@@ -70,5 +94,20 @@ public class GoodsItem {
 
     public void setImgSrc(int imgSrc) {
         this.imgSrc = imgSrc;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(goodId);
+        parcel.writeString(goodName);
+        parcel.writeString(cafeName);
+        parcel.writeString(price);
+        parcel.writeString(caffeineContent);
+        parcel.writeInt(imgSrc);
     }
 }
