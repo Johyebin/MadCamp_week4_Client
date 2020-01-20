@@ -73,7 +73,7 @@ public class FragmentGongcha extends Fragment {
                         dialog.dismiss();
 
                         Intent intent = new Intent();
-                        intent.putExtra("goodID", goodsItem.getGoodId());
+                        intent.putExtra("goodId", goodsItem.getGoodId());
                         getActivity().setResult(RESULT_OK, intent);
 
                         getActivity().finish();
