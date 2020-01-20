@@ -111,21 +111,20 @@ public class SettingActivity extends AppCompatActivity {
         favorite_menu_title.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View v) {
-                final FavoriteCoffeeDialogFragment favoriteCoffeeDialogFragment = new FavoriteCoffeeDialogFragment(getSharedPreferences("caffe", MODE_PRIVATE).getString("caffe", null));
+                final SharedPreferences sharedPreferencesIn = getSharedPreferences("caffe", MODE_PRIVATE);
+                final FavoriteCoffeeDialogFragment favoriteCoffeeDialogFragment = new FavoriteCoffeeDialogFragment(sharedPreferencesIn.getString("caffe", null));
                 favoriteCoffeeDialogFragment.show(getSupportFragmentManager(), "dialog");
                 getSupportFragmentManager().executePendingTransactions();
-                //Log.wtf("MENUS", "reach here");
-
                 favoriteCoffeeDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
                         arrayList = favoriteCoffeeDialogFragment.getGoodsItemArrayList();
                         String favor = "";
                         for(int i = 0; i < arrayList.size(); i++){
-                            favor.concat(arrayList.get(i).getGoodName() +  ", ");
+                            favor += arrayList.get(i).getGoodName() +  ", ";
                         }
-                        SharedPreferences.Editor editor = getSharedPreferences("caffe", MODE_PRIVATE).edit();
-                        Log.wtf("MENUS", favor);
+                        favor = favor.substring(0, favor.length()-2);
+                        SharedPreferences.Editor editor = sharedPreferencesIn.edit();
                         editor.putString("menu", favor);
                         editor.commit();
                         favoriteMenu.setText(favor);

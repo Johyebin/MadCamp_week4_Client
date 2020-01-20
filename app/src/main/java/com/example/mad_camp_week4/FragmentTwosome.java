@@ -1,10 +1,13 @@
 package com.example.mad_camp_week4;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +46,28 @@ public class FragmentTwosome extends Fragment {
         gridView = view.findViewById(R.id.twosome_menu_view);
         MenuAdapter twosomeAdapter = new MenuAdapter(requireContext(), twosomeMenu);
         gridView.setAdapter(twosomeAdapter);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("caffe", Context.MODE_PRIVATE);
+        if(sharedPreferences.getString("caffe", "").equals("투썸")){
+            String str = sharedPreferences.getString("menu", "");
+            String[] array = str.split(", "); // fav메뉴 이름 배열
+            ArrayList<String> goodIDArray = new ArrayList<>(); //fav메뉴에 해당하는 goodID 배열
+            for(String s: array){
+                Log.wtf("PARSED", s);
+                for(int i=0;i<twosomeMenu.size();i++){
+                    if(s.equals(twosomeMenu.get(i).getGoodName())){
+                        goodIDArray.add(twosomeMenu.get(i).getGoodId());
+                        twosomeMenu.remove(i);
+                    }
+                }
+            }
+
+            //TODO: 즐겨찾기 상단에 별 띄우기
+            for(String id: goodIDArray){
+                Log.wtf("GOODID", goodIDArray.toString());
+                twosomeMenu.add(0, goodsDB.findGoods(id));
+            }
+        }
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
