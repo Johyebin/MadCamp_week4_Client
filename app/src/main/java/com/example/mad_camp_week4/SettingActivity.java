@@ -44,9 +44,11 @@ public class SettingActivity extends AppCompatActivity {
         favoriteCaffe = findViewById(R.id.favorite_cafe);
         favoriteCaffe.setText(getSharedPreferences("caffe", MODE_PRIVATE).getString("caffe", ""));
         favoriteMenu = findViewById(R.id.favorite_menu);
+        favoriteMenu.setText(getSharedPreferences("caffe", MODE_PRIVATE).getString("menu", ""));
+        favoriteTime = findViewById(R.id.coffee_time);
+        favoriteTime.setText(getSharedPreferences("caffe", MODE_PRIVATE).getString("menu", ""));
 
         calendar = Calendar.getInstance();
-        favoriteTime = findViewById(R.id.coffee_time);
 
         back.setOnClickListener(new Button.OnClickListener(){
             @Override
@@ -117,6 +119,8 @@ public class SettingActivity extends AppCompatActivity {
                         for(int i = 0; i < arrayList.size(); i++){
                             favor += arrayList.get(i).getGoodName() +  ", ";
                         }
+                        SharedPreferences.Editor editor = getSharedPreferences("caffe", MODE_PRIVATE).edit();
+                        editor.putString("menu", favor);
                         favoriteMenu.setText(favor);
                     }
                 });

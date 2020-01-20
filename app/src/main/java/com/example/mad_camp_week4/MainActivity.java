@@ -268,10 +268,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         lstResultRowId.clear();
 
-        if (resultCode != RESULT_OK) {
-            Toast.makeText(MainActivity.this, "List Selection Failed", Toast.LENGTH_LONG).show();
-            return;
-        }
+        if (resultCode != RESULT_OK) return;
 
         if (requestCode == RESULT_CODE && data != null) {
             lstCafeUpload.clear();
@@ -295,7 +292,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
         if (requestCode == RESULT_CODE_ADD && data != null) {
-           // Toast.makeText(MainActivity.this, "Added: ".concat(data.getStringExtra("goodID")), Toast.LENGTH_LONG).show();
             ArrayList<CafeResult> tmpList = new ArrayList<>();
             String tmpString = data.getStringExtra("goodId");
             GoodsItem tmpGoods = goodsDatabase.findGoods(tmpString);
