@@ -35,10 +35,6 @@ public class FragmentTwosome extends Fragment {
 
     public FragmentTwosome() {
         twosomeMenu = goodsDB.getCafeItemArrayList("투썸");
-        String favoriteCafe = getActivity().getSharedPreferences("caffe", requireContext().MODE_PRIVATE).getString("caffe", "");
-        if(favoriteCafe.equals("투썸")){
-
-        }
     }
 
     @Override

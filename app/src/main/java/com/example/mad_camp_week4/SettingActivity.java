@@ -46,7 +46,7 @@ public class SettingActivity extends AppCompatActivity {
         favoriteMenu = findViewById(R.id.favorite_menu);
         favoriteMenu.setText(getSharedPreferences("caffe", MODE_PRIVATE).getString("menu", ""));
         favoriteTime = findViewById(R.id.coffee_time);
-        favoriteTime.setText(getSharedPreferences("caffe", MODE_PRIVATE).getString("menu", ""));
+        favoriteTime.setText(getSharedPreferences("caffe", MODE_PRIVATE).getString("time", ""));
 
         calendar = Calendar.getInstance();
 
@@ -114,16 +114,20 @@ public class SettingActivity extends AppCompatActivity {
                 final FavoriteCoffeeDialogFragment favoriteCoffeeDialogFragment = new FavoriteCoffeeDialogFragment(getSharedPreferences("caffe", MODE_PRIVATE).getString("caffe", null));
                 favoriteCoffeeDialogFragment.show(getSupportFragmentManager(), "dialog");
                 getSupportFragmentManager().executePendingTransactions();
+                //Log.wtf("MENUS", "reach here");
+
                 favoriteCoffeeDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
                         arrayList = favoriteCoffeeDialogFragment.getGoodsItemArrayList();
                         String favor = "";
                         for(int i = 0; i < arrayList.size(); i++){
-                            favor += arrayList.get(i).getGoodName() +  ", ";
+                            favor.concat(arrayList.get(i).getGoodName() +  ", ");
                         }
                         SharedPreferences.Editor editor = getSharedPreferences("caffe", MODE_PRIVATE).edit();
+                        Log.wtf("MENUS", favor);
                         editor.putString("menu", favor);
+                        editor.commit();
                         favoriteMenu.setText(favor);
                     }
                 });
