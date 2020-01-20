@@ -71,7 +71,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/today_coffee_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:layout_marginTop="10dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,6 +91,7 @@
         app:layout_constraintTop_toBottomOf="@+id/today_coffee_view">
 
         <TextView
+            android:id="@+id/caffeine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -109,6 +110,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/caffeine_mg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -116,6 +118,7 @@
             android:text="mg" />
 
         <TextView
+            android:id="@+id/price"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -130,9 +133,11 @@
             android:layout_weight="3"
             android:fontFamily="@font/onprettynight"
             android:gravity="right"
-            android:text="0" />
+            android:text="0"
+            android:textStyle="bold"/>
 
         <TextView
+            android:id="@+id/price_won"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

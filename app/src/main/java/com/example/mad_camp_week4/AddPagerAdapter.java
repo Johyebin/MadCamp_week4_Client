@@ -1,5 +1,7 @@
 package com.example.mad_camp_week4;
 
+import android.content.SharedPreferences;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;

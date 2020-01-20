@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> lstResultRowId = new ArrayList<>(); // 선택되지 않은 아이템을 삭제하기 위한 rowId를 저장하는 리스트
     private ArrayList<String> lstDeleteRowId = new ArrayList<>(); // 일괄 선택된 애들을 모두 지움
     private ImageView cup_of_coffee;
+    private ColorStateList oldColor;
 
     private ImageButton setting_btn, add_btn;
     private GoodsDatabase goodsDatabase = new GoodsDatabase(); // GoodsItem을 조작하기 위한 객체 생성
@@ -90,7 +92,32 @@ public class MainActivity extends AppCompatActivity {
                 TodayCoffeeAdapter todayCoffeeAdapter = new TodayCoffeeAdapter(goodsList);
                 todayCoffeeView.setAdapter(todayCoffeeAdapter);
                 TextView caffeineTextView = dialogView.findViewById(R.id.caffeine_content_edit);
+                TextView caffeineView = dialogView.findViewById(R.id.caffeine);
+                TextView caffeinemgView = dialogView.findViewById(R.id.caffeine_mg);
+                if(oldColor == null){
+                    oldColor = caffeineTextView.getTextColors();
+                }
+                if(caffeine>400){
+                    caffeineView.setTextColor(Color.RED);
+                    caffeinemgView.setTextColor(Color.RED);
+                    caffeineTextView.setTextColor(Color.RED);
+                } else {
+                    caffeineView.setTextColor(oldColor);
+                    caffeinemgView.setTextColor(oldColor);
+                    caffeineTextView.setTextColor(oldColor);
+                }
                 TextView priceTextView = dialogView.findViewById(R.id.price_edit);
+                TextView priceView = dialogView.findViewById(R.id.price);
+                TextView priceWonView = dialogView.findViewById(R.id.price_won);
+                if(price>20000){
+                    priceView.setTextColor(Color.RED);
+                    priceWonView.setTextColor(Color.RED);
+                    priceTextView.setTextColor(Color.RED);
+                } else {
+                    priceView.setTextColor(oldColor);
+                    priceWonView.setTextColor(oldColor);
+                    priceTextView.setTextColor(oldColor);
+                }
                 caffeineTextView.setText("" + caffeine);
                 priceTextView.setText("" + price);
 
@@ -218,6 +245,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                     caffeine = goodsDatabase.getCaffeineContent(goodsList);
                     price = goodsDatabase.getPrice(goodsList);
+                    if(caffeine>400){
+                        cup_of_coffee.setImageResource(R.drawable.coffee_spill);
+                    } else {
+                        cup_of_coffee.setImageResource(R.drawable.round_cup);
+                    }
                 } else if (response.code() == 404) {
                     Toast.makeText(getApplicationContext(), "Download Failed", Toast.LENGTH_LONG).show();
                 }
@@ -236,10 +268,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         lstResultRowId.clear();
 
-        if (resultCode != RESULT_OK) {
-            Toast.makeText(MainActivity.this, "List Selection Failed", Toast.LENGTH_LONG).show();
-            return;
-        }
+        if (resultCode != RESULT_OK) return;
 
         if (requestCode == RESULT_CODE && data != null) {
             lstCafeUpload.clear();
@@ -263,7 +292,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
         if (requestCode == RESULT_CODE_ADD && data != null) {
-           // Toast.makeText(MainActivity.this, "Added: ".concat(data.getStringExtra("goodID")), Toast.LENGTH_LONG).show();
             ArrayList<CafeResult> tmpList = new ArrayList<>();
             String tmpString = data.getStringExtra("goodId");
             GoodsItem tmpGoods = goodsDatabase.findGoods(tmpString);

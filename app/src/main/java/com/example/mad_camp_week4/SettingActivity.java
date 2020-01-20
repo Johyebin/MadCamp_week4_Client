@@ -55,9 +55,11 @@ public class SettingActivity extends AppCompatActivity {
         favoriteCaffe = findViewById(R.id.favorite_cafe);
         favoriteCaffe.setText(getSharedPreferences("caffe", MODE_PRIVATE).getString("caffe", ""));
         favoriteMenu = findViewById(R.id.favorite_menu);
+        favoriteMenu.setText(getSharedPreferences("caffe", MODE_PRIVATE).getString("menu", ""));
+        favoriteTime = findViewById(R.id.coffee_time);
+        favoriteTime.setText(getSharedPreferences("caffe", MODE_PRIVATE).getString("time", ""));
 
         calendar = Calendar.getInstance();
-        favoriteTime = findViewById(R.id.coffee_time);
 
         back.setOnClickListener(new Button.OnClickListener(){
             @Override
@@ -72,7 +74,7 @@ public class SettingActivity extends AppCompatActivity {
                 final View dialogView = getLayoutInflater().inflate(R.layout.favorite_cafe_dialog, null);
                 final LinearLayout twosome_logo = dialogView.findViewById(R.id.twosome_logo);
                 final LinearLayout starbucks_logo = dialogView.findViewById(R.id.starbucks_logo);
-                final LinearLayout etc_logo = dialogView.findViewById(R.id.etc_logo);
+                final LinearLayout gongcha_logo = dialogView.findViewById(R.id.gongcha_logo);
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
                 builder.setView(dialogView);
@@ -85,7 +87,6 @@ public class SettingActivity extends AppCompatActivity {
                 twosome_logo.setOnClickListener(new Button.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                        //TODO: favorite cafe -> global variable? move to main activity?
                         favoriteCaffe.setText("투썸 플레이스");
                         SharedPreferences sharedPreferences = getSharedPreferences("caffe", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -105,10 +106,15 @@ public class SettingActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-                etc_logo.setOnClickListener(new View.OnClickListener() {
+                gongcha_logo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        favoriteCaffe.setText("공차");
+                        SharedPreferences sharedPreferences = getSharedPreferences("caffe", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("caffe", "공차");
+                        editor.commit();
+                        dialog.dismiss();
                     }
                 });
             }
@@ -116,8 +122,8 @@ public class SettingActivity extends AppCompatActivity {
         favorite_menu_title.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //TODO: two spinner or same as add BUT, MULTIPLE Choices! how to CRUD!
-                final FavoriteCoffeeDialogFragment favoriteCoffeeDialogFragment = new FavoriteCoffeeDialogFragment(getSharedPreferences("caffe", MODE_PRIVATE).getString("caffe", null));
+                final SharedPreferences sharedPreferencesIn = getSharedPreferences("caffe", MODE_PRIVATE);
+                final FavoriteCoffeeDialogFragment favoriteCoffeeDialogFragment = new FavoriteCoffeeDialogFragment(sharedPreferencesIn.getString("caffe", null));
                 favoriteCoffeeDialogFragment.show(getSupportFragmentManager(), "dialog");
                 getSupportFragmentManager().executePendingTransactions();
                 favoriteCoffeeDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -131,6 +137,11 @@ public class SettingActivity extends AppCompatActivity {
                             }
                             favoriteMenu.setText(favor);
                         }
+                        SharedPreferences.Editor editor = sharedPreferencesIn.edit();
+                        editor.putString("menu", favor);
+                        editor.commit();
+                        favoriteMenu.setText(favor);
+
                     }
                 });
             }
