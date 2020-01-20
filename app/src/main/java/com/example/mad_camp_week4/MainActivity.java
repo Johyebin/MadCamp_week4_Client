@@ -200,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
     // 일괄건이 없거나 일괄건을 처리하고 돌아온 후, 결과값으로 리스트 세팅 + 카페인 수치 계산
     // 변경해서 올린 디비로 조작
     public void setContents(){
-
         HashMap<String,String> map = new HashMap<>();
         map.put("tradDate",currentDate);
 
