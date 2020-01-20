@@ -46,7 +46,7 @@ public class SettingActivity extends AppCompatActivity {
         favoriteMenu = findViewById(R.id.favorite_menu);
         favoriteMenu.setText(getSharedPreferences("caffe", MODE_PRIVATE).getString("menu", ""));
         favoriteTime = findViewById(R.id.coffee_time);
-        favoriteTime.setText(getSharedPreferences("caffe", MODE_PRIVATE).getString("menu", ""));
+        favoriteTime.setText(getSharedPreferences("caffe", MODE_PRIVATE).getString("time", ""));
 
         calendar = Calendar.getInstance();
 
@@ -111,7 +111,8 @@ public class SettingActivity extends AppCompatActivity {
         favorite_menu_title.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View v) {
-                final FavoriteCoffeeDialogFragment favoriteCoffeeDialogFragment = new FavoriteCoffeeDialogFragment(getSharedPreferences("caffe", MODE_PRIVATE).getString("caffe", null));
+                final SharedPreferences sharedPreferencesIn = getSharedPreferences("caffe", MODE_PRIVATE);
+                final FavoriteCoffeeDialogFragment favoriteCoffeeDialogFragment = new FavoriteCoffeeDialogFragment(sharedPreferencesIn.getString("caffe", null));
                 favoriteCoffeeDialogFragment.show(getSupportFragmentManager(), "dialog");
                 getSupportFragmentManager().executePendingTransactions();
                 favoriteCoffeeDialogFragment.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -122,8 +123,9 @@ public class SettingActivity extends AppCompatActivity {
                         for(int i = 0; i < arrayList.size(); i++){
                             favor += arrayList.get(i).getGoodName() +  ", ";
                         }
-                        SharedPreferences.Editor editor = getSharedPreferences("caffe", MODE_PRIVATE).edit();
+                        SharedPreferences.Editor editor = sharedPreferencesIn.edit();
                         editor.putString("menu", favor);
+                        editor.commit();
                         favoriteMenu.setText(favor);
                     }
                 });
