@@ -53,12 +53,16 @@ public class MainActivity extends AppCompatActivity {
     private String currentDate; // 현재 시간을 저장하기 위한 전역변수
     private ArrayList<CafeResult> lstCafeSelect = new ArrayList<>(); // 일괄업로드된 항목을 식별하기 위해 뷰를 뿌려줄 배열
     private ArrayList<CafeResult> lstCafeUpload = new ArrayList<>();
-    private final int RESULT_CODE = 1;
+    private final int RESULT_CODE = 1; //일괄 결제건에 대한 코드
+    private final int RESULT_CODE_SETTING = 2;
+    private final int RESULT_CODE_ADD = 3;
     private ArrayList<String> lstResultRowId = new ArrayList<>(); // 선택되지 않은 아이템을 삭제하기 위한 rowId를 저장하는 리스트
     private ArrayList<String> lstDeleteRowId = new ArrayList<>(); // 일괄 선택된 애들을 모두 지움
-    ImageView cup_of_coffee;
-    ImageButton setting_btn;
-    ImageButton add_btn;
+    private ImageView cup_of_coffee;
+    private ImageButton setting_btn;
+    private ImageButton add_btn;
+    private RecyclerView todayCoffeeView = null;
+    private TodayCoffeeAdapter todayCoffeeAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +95,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 View dialogView = getLayoutInflater().inflate(R.layout.today_coffee_dialog, null);
-                RecyclerView coffeeView = findViewById(R.id.today_coffee_view);
+
+                ArrayList<GoodsItem> mList = new ArrayList<>();
+                mList.add(new GoodsItem("10","아메리카노\n블랙그라운드","투썸","4100","145",R.drawable.twosome_americano));
+                mList.add(new GoodsItem("11","아메리카노\n아로마노트","투썸","4100","169",R.drawable.twosome_americano));
+                mList.add(new GoodsItem("23","에스프레소\n콘파나","스타벅스","3800","75",R.drawable.starbucks_espressocon));
+
+                todayCoffeeView = dialogView.findViewById(R.id.today_coffee_view);
+                todayCoffeeAdapter = new TodayCoffeeAdapter(mList);
+
+                todayCoffeeView.setAdapter(todayCoffeeAdapter);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setView(dialogView);
@@ -112,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         add_btn.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AddActivity.class));
+                startActivityForResult(new Intent(MainActivity.this, AddActivity.class), RESULT_CODE_ADD);
             }
         });
 
@@ -215,6 +228,9 @@ public class MainActivity extends AppCompatActivity {
             }
             upLoadRow(lstCafeUpload);// 변경한 row들을 다시 서버에 업로드
             //TODO: update lists for today coffee dialog
+        }
+        if(requestCode == RESULT_CODE_ADD && data != null){
+            Toast.makeText(MainActivity.this, "Added: ".concat(data.getStringExtra("goodID")), Toast.LENGTH_LONG).show();
         }
     }
 

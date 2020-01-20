@@ -6,11 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -37,6 +34,11 @@ public class TodayCoffeeAdapter extends RecyclerView.Adapter<TodayCoffeeAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         GoodsItem item = mData.get(position);
 
+        holder.img.setImageResource(item.getImgSrc());
+        holder.menu.setText(item.getGoodName());
+        holder.cafe.setText(item.getCafeName());
+        holder.price.setText(item.getPrice());
+        holder.caffeine_content.setText(item.getCaffeineContent());
     }
 
     @Override

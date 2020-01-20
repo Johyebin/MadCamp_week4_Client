@@ -10,8 +10,8 @@
         android:id="@+id/title_today_coffee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/batang"
         android:layout_marginTop="20dp"
+        android:fontFamily="@font/batang"
         android:gravity="center"
         android:text="오늘의 커피"
         android:textSize="30dp"
@@ -24,47 +24,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:orientation="horizontal"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/title_today_coffee"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_today_coffee">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/simple"
             android:gravity="center"
-            android:text="이미지"
-            android:fontFamily="@font/simple"/>
+            android:text="이미지" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:gravity="center"
-            android:text="제품명"
-            android:fontFamily="@font/simple"/>
+            android:fontFamily="@font/simple"
+            android:text="   제품명" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="카페명"
-            android:fontFamily="@font/simple"/>
+            android:fontFamily="@font/simple"
+            android:text="카페명" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="가격"
-            android:fontFamily="@font/simple"/>
+            android:fontFamily="@font/simple"
+            android:text="가격" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="카페인"
-            android:fontFamily="@font/simple"/>
+            android:fontFamily="@font/simple"
+            android:text="카페인" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -81,10 +82,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:paddingBottom="20dp"
+        android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:orientation="horizontal"
+        android:paddingBottom="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/today_coffee_view">
@@ -93,38 +94,39 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:fontFamily="@font/simple"
+            android:fontFamily="@font/onprettynight"
             android:gravity="center"
-            android:text="카페인"
-            android:textStyle="bold" />
+            android:text="카페인" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:fontFamily="@font/onprettynight"
             android:gravity="right"
-            android:text="0" />
+            android:text="0"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:fontFamily="@font/simple"
+            android:fontFamily="@font/onprettynight"
             android:text="mg" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:fontFamily="@font/simple"
+            android:fontFamily="@font/onprettynight"
             android:gravity="center"
-            android:text="커피값"
-            android:textStyle="bold" />
+            android:text="커피값" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:fontFamily="@font/onprettynight"
             android:gravity="right"
             android:text="0" />
 
@@ -132,7 +134,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:fontFamily="@font/simple"
+            android:fontFamily="@font/onprettynight"
             android:text="원" />
     </LinearLayout>
 

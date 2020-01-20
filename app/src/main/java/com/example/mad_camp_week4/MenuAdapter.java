@@ -11,12 +11,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class MenuAdapter extends BaseAdapter {
-    ArrayList<Menu> menus;
+    ArrayList<GoodsItem> menus;
     Context context;
-    int layout;
     LayoutInflater inflater;
 
-    public MenuAdapter(Context context, ArrayList<Menu> menus){
+    public MenuAdapter(Context context, ArrayList<GoodsItem> menus){
         this.context = context;
         this.menus = menus;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -45,8 +44,8 @@ public class MenuAdapter extends BaseAdapter {
         ImageView coffeeImg = convertView.findViewById(R.id.coffee_image);
         TextView coffeeName = convertView.findViewById(R.id.coffee_name);
 
-        coffeeImg.setImageResource(menus.get(position).getImg());
-        coffeeName.setText(menus.get(position).getName());
+        coffeeImg.setImageResource(menus.get(position).getImgSrc());
+        coffeeName.setText(menus.get(position).getGoodName());
 
         return convertView;
     }
