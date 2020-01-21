@@ -45,6 +45,8 @@ public class FragmentTwosome extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.coffee_add_twosome, container, false);
         gridView = view.findViewById(R.id.twosome_menu_view);
+        MenuAdapter twosomeAdapter = new MenuAdapter(requireContext(), twosomeMenu);
+        gridView.setAdapter(twosomeAdapter);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("caffe", Context.MODE_PRIVATE);
         if(sharedPreferences.getString("caffe", "").equals("투썸")){
@@ -66,8 +68,6 @@ public class FragmentTwosome extends Fragment {
                 goodsDB.findGoods(id).setIsFavorite(true);
                 twosomeMenu.add(0, goodsDB.findGoods(id));
             }
-            MenuAdapter twosomeAdapter = new MenuAdapter(requireContext(), twosomeMenu);
-            gridView.setAdapter(twosomeAdapter);
         }
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
