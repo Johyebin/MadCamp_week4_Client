@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="500dp"
-    android:background="@android:color/white"
+    android:background="@drawable/rounded"
     android:orientation="vertical">
 
     <TextView
@@ -17,21 +17,25 @@
         android:textSize="18dp"
         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button" />
-
     <GridView
         android:id="@+id/menu_view"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="400dp"
         android:horizontalSpacing="10dp"
         android:numColumns="3"
         android:scrollbars="horizontal"
         android:verticalSpacing="10dp">
-
     </GridView>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:fontFamily="@font/batang"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="저장하기" />
 
 </LinearLayout>

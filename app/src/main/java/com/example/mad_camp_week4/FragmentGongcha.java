@@ -26,7 +26,7 @@ import static android.app.Activity.RESULT_OK;
 public class FragmentGongcha extends Fragment {
 
     private GridView gridView;
-    private GoodsDatabase goodsDB = new GoodsDatabase();
+    private GoodsDatabase goodsDB;
     private ArrayList<GoodsItem> gongchaMenu;
     private View dialogView;
     private ImageView menuImage;
@@ -36,6 +36,7 @@ public class FragmentGongcha extends Fragment {
     private Button addButton;
 
     public FragmentGongcha(){
+        goodsDB = new GoodsDatabase();
         gongchaMenu = goodsDB.getCafeItemArrayList("공차");
     }
 
@@ -61,13 +62,11 @@ public class FragmentGongcha extends Fragment {
                     }
                 }
             }
-            //TODO: 즐겨찾기 상단에 별 띄우기
-            //TODO: 최애 카페 바꿨을 때 최애 메뉴 리셋
-            //TODO: 최애 메뉴 세팅 디자인 고치기
             //TODO: 커피 쏟기 컨테스트
            for(String id: goodIDArray){
                 //Log.wtf("GOODID", goodIDArray.toString());
-                gongchaMenu.add(0, goodsDB.findGoods(id));
+               goodsDB.findGoods(id).setIsFavorite(true);
+               gongchaMenu.add(0, goodsDB.findGoods(id));
             }
         }
 

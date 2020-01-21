@@ -43,9 +43,20 @@ public class MenuAdapter extends BaseAdapter {
         }
         ImageView coffeeImg = convertView.findViewById(R.id.coffee_image);
         TextView coffeeName = convertView.findViewById(R.id.coffee_name);
+        ImageView favorite = convertView.findViewById(R.id.star_image);
+        ImageView checked = convertView.findViewById(R.id.check_image);
 
         coffeeImg.setImageResource(menus.get(position).getImgSrc());
         coffeeName.setText(menus.get(position).getGoodName());
+        if(menus.get(position).getIsFavorite()){
+            favorite.setVisibility(View.VISIBLE);
+        }
+
+        if(menus.get(position).getIsChecked()){
+            checked.setVisibility(View.VISIBLE);
+        } else {
+            checked.setVisibility(View.GONE);
+        }
 
         return convertView;
     }

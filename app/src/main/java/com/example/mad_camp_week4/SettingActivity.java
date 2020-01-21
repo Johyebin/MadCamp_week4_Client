@@ -80,6 +80,8 @@ public class SettingActivity extends AppCompatActivity {
                 builder.setView(dialogView);
 
                 final AlertDialog dialog = builder.create();
+                final String prev = getSharedPreferences("caffe", MODE_PRIVATE).getString("caffe", "");
+                //변경 전 최애 카페
 
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
@@ -90,6 +92,11 @@ public class SettingActivity extends AppCompatActivity {
                         favoriteCaffe.setText("투썸 플레이스");
                         SharedPreferences sharedPreferences = getSharedPreferences("caffe", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
+                        if(!prev.equals("투썸")){ // 최애 카페 변경됐을 경우
+                            editor.putString("menu", "");
+                            Log.wtf("FAVCAFE", "changed@");
+                            favoriteMenu.setText("");
+                        }
                         editor.putString("caffe", "투썸");
                         editor.commit();
                         dialog.dismiss();
@@ -101,6 +108,11 @@ public class SettingActivity extends AppCompatActivity {
                         favoriteCaffe.setText("스타벅스");
                         SharedPreferences sharedPreferences = getSharedPreferences("caffe", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
+                        if(!prev.equals("스타벅스")){ // 최애 카페 변경됐을 경우
+                            editor.putString("menu", "");
+                            Log.wtf("FAVCAFE", "changed@");
+                            favoriteMenu.setText("");
+                        }
                         editor.putString("caffe", "스타벅스");
                         editor.commit();
                         dialog.dismiss();
@@ -112,6 +124,11 @@ public class SettingActivity extends AppCompatActivity {
                         favoriteCaffe.setText("공차");
                         SharedPreferences sharedPreferences = getSharedPreferences("caffe", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
+                        if(!prev.equals("공차")){ // 최애 카페 변경됐을 경우
+                            editor.putString("menu", "");
+                            Log.wtf("FAVCAFE", "changed@");
+                            favoriteMenu.setText("");
+                        }
                         editor.putString("caffe", "공차");
                         editor.commit();
                         dialog.dismiss();
@@ -130,27 +147,26 @@ public class SettingActivity extends AppCompatActivity {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
                         arrayList = favoriteCoffeeDialogFragment.getGoodsItemArrayList();
+                        Log.wtf("DISMISSED", "reach here");
+                        String favor = "";
                         if(arrayList.size() != 0){
-                            String favor = "";
                             for(int i = 0; i < arrayList.size(); i++){
                                 favor += arrayList.get(i).getGoodName() +  ", ";
                             }
+                            favor = favor.substring(0, favor.length()-2);
+                            SharedPreferences.Editor editor = sharedPreferencesIn.edit();
+                            editor.putString("menu", favor);
+                            editor.commit();
                             favoriteMenu.setText(favor);
                         }
-                        favor = favor.substring(0, favor.length()-2);
-                        SharedPreferences.Editor editor = sharedPreferencesIn.edit();
-                        editor.putString("menu", favor);
-                        editor.commit();
-                        favoriteMenu.setText(favor);
-
                     }
                 });
+                favoriteCoffeeDialogFragment.getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             }
         });
         coffee_time_title.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //TODO: multiple options? how to CRUD!
                 TimePickerDialog timePickerDialog = new TimePickerDialog(SettingActivity.this, new TimePickerDialog.OnTimeSetListener(){
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int min) {

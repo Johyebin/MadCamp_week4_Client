@@ -155,7 +155,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="right"
-            android:text="알림 받을레 말레" />
+            android:text="알림 받을래 말래" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

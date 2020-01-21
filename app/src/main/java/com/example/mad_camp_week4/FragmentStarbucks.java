@@ -26,7 +26,7 @@ import static android.app.Activity.RESULT_OK;
 public class FragmentStarbucks extends Fragment {
 
     private GridView gridView;
-    private GoodsDatabase goodsDB = new GoodsDatabase();
+    private GoodsDatabase goodsDB;
     private ArrayList<GoodsItem> starbucksMenu;
     private View dialogView;
     private ImageView menuImage;
@@ -36,6 +36,7 @@ public class FragmentStarbucks extends Fragment {
     private Button addButton;
 
     public FragmentStarbucks(){
+        goodsDB = new GoodsDatabase();
         starbucksMenu = goodsDB.getCafeItemArrayList("스타벅스");
     }
 
@@ -62,9 +63,9 @@ public class FragmentStarbucks extends Fragment {
                 }
             }
 
-            //TODO: 즐겨찾기 상단에 별 띄우기
             for(String id: goodIDArray){
                 //Log.wtf("GOODID", goodIDArray.toString());
+                goodsDB.findGoods(id).setIsFavorite(true);
                 starbucksMenu.add(0, goodsDB.findGoods(id));
             }
         }
