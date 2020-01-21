@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -330,15 +331,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    int upCount; // 업로드 한 갯수를 셀 변수
-
     public void upLoadRow(ArrayList<CafeResult> argsList) {
-        upCount = 0;
         ArrayList<CafeResult> tmpList = new ArrayList<>();
         for (CafeResult c : argsList)
             tmpList.add(c);
 
+//        do {
         // 선택된 것의 갯수만큼 업로드
+//            for (int i = 0; i < tmpList.size(); i++) {
+        List<HashMap<String, String>> arrayList = new ArrayList<>();
         for (int i = 0; i < tmpList.size(); i++) {
             HashMap<String, String> map = new HashMap<>();
             // 요청 객체 ( 입력값을 ) 보냄
@@ -350,33 +351,29 @@ public class MainActivity extends AppCompatActivity {
             map.put("goodName", tmpList.get(i).getGoodName());
             map.put("cafeName", tmpList.get(i).getCafeName());
             map.put("multipleFlag", tmpList.get(i).getMultipleFlag());
-            Call<Void> call = retrofitInterface.executePush(map);
-
-            // 해당 요청을 서버 프로그램의 req출력 큐에 넣음
-            call.enqueue(new Callback<Void>() { // 처리되어 결과가 오면 콜백함수가 실행 // 등록은 서버로부터 돌려받을 값이 없기 때문에 Void임
-                             @Override
-                             // 서버로부터 처리는 잘된경우 // 클라이언트는 상태코드로 처리결과를 확인
-                             public void onResponse(Call<Void> call, Response<Void> response) { // 요청과 받은 값
-                                 if (response.code() == 200) {
-                                     upCount++;
-                                 } else if (response.code() == 400) {
-                                     Toast.makeText(MainActivity.this, "Upload Failed", Toast.LENGTH_LONG).show();
-                                 }
-                             }
-
-                             // 예기치 못한 오류
-                             @Override
-                             public void onFailure(Call<Void> call, Throwable t) {
-                                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-                             }
-                         }
-            );
-
+            arrayList.add(map);
         }
-        if (upCount == tmpList.size())
-            Toast.makeText(MainActivity.this, "Uploaded successfully", Toast.LENGTH_LONG).show();
-    }
+        Call<Void> call1 = retrofitInterface.executePushAll(arrayList);
+        // 해당 요청을 서버 프로그램의 req출력 큐에 넣음
+        call1.enqueue(new Callback<Void>() { // 처리되어 결과가 오면 콜백함수가 실행 // 등록은 서버로부터 돌려받을 값이 없기 때문에 Void임
+                          @Override
+                          // 서버로부터 처리는 잘된경우 // 클라이언트는 상태코드로 처리결과를 확인
+                          public void onResponse(Call<Void> call, Response<Void> response) { // 요청과 받은 값
+                              if (response.code() == 200) {
+                                  Toast.makeText(MainActivity.this, "Upload Ended", Toast.LENGTH_LONG).show();
+                              } else if (response.code() == 400) {
+                                  Toast.makeText(MainActivity.this, "Upload Failed", Toast.LENGTH_LONG).show();
+                              }
+                          }
 
+            // 예기치 못한 오류
+                          @Override
+                          public void onFailure(Call<Void> call, Throwable t) {
+                              Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                          }
+                      }
+        );
+    }
 
     int deleteCount; // 갯수를 셀 변수
 

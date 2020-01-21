@@ -18,5 +18,7 @@ public interface RetrofitInterface {
     Call<Void> executePush(@Body HashMap<String, String> map);
     @POST("/deleteProduct")
     Call<Void> executeDelete(@Body HashMap<String, String> map);
+    @POST("/pushAll")
+    Call<Void> executePushAll(@Body List<HashMap<String, String>> arrayList);
 
 }
