@@ -23,6 +23,7 @@
         android:fontFamily="@font/bokjori"
         android:gravity="center"
         android:text="카  폐  인"
+        android:textColor="#612C0A"
         android:textSize="60dp" />
 
 </AbsoluteLayout>

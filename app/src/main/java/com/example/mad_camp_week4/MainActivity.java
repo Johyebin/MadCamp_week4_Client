@@ -3,6 +3,7 @@ package com.example.mad_camp_week4;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
@@ -246,9 +248,26 @@ public class MainActivity extends AppCompatActivity {
                     caffeine = goodsDatabase.getCaffeineContent(goodsList);
                     price = goodsDatabase.getPrice(goodsList);
                     if(caffeine>400){
-                        cup_of_coffee.setImageResource(R.drawable.coffee_spill);
+                        cup_of_coffee.setImageResource(R.drawable.coffee_400);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setTitle("경고");
+                        ImageView imageView = new ImageView(MainActivity.this);
+                        imageView.setImageResource(R.drawable.coffee_spill);
+                        builder.setView(imageView);
+                        builder.setMessage("카페인 1일 섭취량 초과 (400mg)");
+                        builder.setPositiveButton("반성", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getApplicationContext(),"반성하세요",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    } else if(caffeine>200){
+                        cup_of_coffee.setImageResource(R.drawable.coffee_200);
                     } else {
-                        cup_of_coffee.setImageResource(R.drawable.round_cup);
+                        cup_of_coffee.setImageResource(R.drawable.coffee_0);
+
                     }
                 } else if (response.code() == 404) {
                     Toast.makeText(getApplicationContext(), "Download Failed", Toast.LENGTH_LONG).show();
