@@ -84,6 +84,7 @@ public class GoodsDatabase {
         return cafeItemList;
     }
 
+
     // findGoods
     // goodId로 해당하는 객체를 반환하는 메소드
     public GoodsItem findGoods(String goodId){

@@ -1,10 +1,13 @@
 package com.example.mad_camp_week4;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +26,7 @@ import static android.app.Activity.RESULT_OK;
 public class FragmentGongcha extends Fragment {
 
     private GridView gridView;
-    private GoodsDatabase goodsDB = new GoodsDatabase();
+    private GoodsDatabase goodsDB;
     private ArrayList<GoodsItem> gongchaMenu;
     private View dialogView;
     private ImageView menuImage;
@@ -33,6 +36,7 @@ public class FragmentGongcha extends Fragment {
     private Button addButton;
 
     public FragmentGongcha(){
+        goodsDB = new GoodsDatabase();
         gongchaMenu = goodsDB.getCafeItemArrayList("공차");
     }
 
@@ -43,6 +47,29 @@ public class FragmentGongcha extends Fragment {
         gridView = view.findViewById(R.id.gongcha_menu_view);
         MenuAdapter gongchaAdapter = new MenuAdapter(requireContext(), gongchaMenu);
         gridView.setAdapter(gongchaAdapter);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("caffe", Context.MODE_PRIVATE);
+        if(sharedPreferences.getString("caffe", "").equals("공차")){
+            String str = sharedPreferences.getString("menu", "");
+            String[] array = str.split(", "); // fav메뉴 이름 배열
+            ArrayList<String> goodIDArray = new ArrayList<>(); //fav메뉴에 해당하는 goodID 배열
+            for(String s: array){
+                //Log.wtf("PARSED", s);
+                for(int i=0;i<gongchaMenu.size();i++){
+                    if(s.equals(gongchaMenu.get(i).getGoodName())){
+                        goodIDArray.add(gongchaMenu.get(i).getGoodId());
+                        gongchaMenu.remove(i);
+                    }
+                }
+            }
+            //TODO: 커피 쏟기 컨테스트
+            //TODO: coffee_info_dialog에도 별 띄우기
+           for(String id: goodIDArray){
+                //Log.wtf("GOODID", goodIDArray.toString());
+               goodsDB.findGoods(id).setIsFavorite(true);
+               gongchaMenu.add(0, goodsDB.findGoods(id));
+            }
+        }
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

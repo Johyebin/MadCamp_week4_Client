@@ -10,6 +10,8 @@ public class GoodsItem implements Parcelable {
     private String price;
     private String caffeineContent;
     private int imgSrc;
+    private boolean isFavorite;
+    private boolean isChecked;
 
     // Constructor
     public GoodsItem() {
@@ -22,6 +24,8 @@ public class GoodsItem implements Parcelable {
         this.price = price;
         this.caffeineContent = caffeineContent;
         this.imgSrc = imgSrc;
+        this.isFavorite = false;
+        this.isChecked = false;
     }
 
     protected GoodsItem(Parcel in) {
@@ -70,6 +74,11 @@ public class GoodsItem implements Parcelable {
         return imgSrc;
     }
 
+    public boolean getIsFavorite(){ return isFavorite; }
+
+    public boolean getIsChecked(){ return isChecked; }
+
+
     // Setter
 
     public void setGoodId(String goodId) {
@@ -95,6 +104,11 @@ public class GoodsItem implements Parcelable {
     public void setImgSrc(int imgSrc) {
         this.imgSrc = imgSrc;
     }
+
+    public void setIsFavorite(boolean isFavorite) { this.isFavorite = isFavorite; }
+
+    public void setIsChecked(boolean isChecked) { this.isChecked = isChecked; }
+
 
     @Override
     public int describeContents() {

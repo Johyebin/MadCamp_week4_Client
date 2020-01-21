@@ -1,7 +1,11 @@
 package com.example.mad_camp_week4;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -9,6 +13,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -16,8 +22,12 @@ import android.widget.TimePicker;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class SettingActivity extends AppCompatActivity {
     LinearLayout favorite_cafe_title;
@@ -29,6 +39,7 @@ public class SettingActivity extends AppCompatActivity {
     private Calendar calendar;
     private TextView favoriteTime;
     private TextView favoriteMenu;
+    private CheckBox checkBox;
 
     private ArrayList<GoodsItem> arrayList;
 
@@ -69,6 +80,8 @@ public class SettingActivity extends AppCompatActivity {
                 builder.setView(dialogView);
 
                 final AlertDialog dialog = builder.create();
+                final String prev = getSharedPreferences("caffe", MODE_PRIVATE).getString("caffe", "");
+                //변경 전 최애 카페
 
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
@@ -79,6 +92,11 @@ public class SettingActivity extends AppCompatActivity {
                         favoriteCaffe.setText("투썸 플레이스");
                         SharedPreferences sharedPreferences = getSharedPreferences("caffe", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
+                        if(!prev.equals("투썸")){ // 최애 카페 변경됐을 경우
+                            editor.putString("menu", "");
+                            Log.wtf("FAVCAFE", "changed@");
+                            favoriteMenu.setText("");
+                        }
                         editor.putString("caffe", "투썸");
                         editor.commit();
                         dialog.dismiss();
@@ -90,6 +108,11 @@ public class SettingActivity extends AppCompatActivity {
                         favoriteCaffe.setText("스타벅스");
                         SharedPreferences sharedPreferences = getSharedPreferences("caffe", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
+                        if(!prev.equals("스타벅스")){ // 최애 카페 변경됐을 경우
+                            editor.putString("menu", "");
+                            Log.wtf("FAVCAFE", "changed@");
+                            favoriteMenu.setText("");
+                        }
                         editor.putString("caffe", "스타벅스");
                         editor.commit();
                         dialog.dismiss();
@@ -101,6 +124,11 @@ public class SettingActivity extends AppCompatActivity {
                         favoriteCaffe.setText("공차");
                         SharedPreferences sharedPreferences = getSharedPreferences("caffe", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
+                        if(!prev.equals("공차")){ // 최애 카페 변경됐을 경우
+                            editor.putString("menu", "");
+                            Log.wtf("FAVCAFE", "changed@");
+                            favoriteMenu.setText("");
+                        }
                         editor.putString("caffe", "공차");
                         editor.commit();
                         dialog.dismiss();
@@ -119,22 +147,26 @@ public class SettingActivity extends AppCompatActivity {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
                         arrayList = favoriteCoffeeDialogFragment.getGoodsItemArrayList();
+                        Log.wtf("DISMISSED", "reach here");
                         String favor = "";
-                        for(int i = 0; i < arrayList.size(); i++){
-                            favor += arrayList.get(i).getGoodName() +  ", ";
+                        if(arrayList.size() != 0){
+                            for(int i = 0; i < arrayList.size(); i++){
+                                favor += arrayList.get(i).getGoodName() +  ", ";
+                            }
+                            favor = favor.substring(0, favor.length()-2);
+                            SharedPreferences.Editor editor = sharedPreferencesIn.edit();
+                            editor.putString("menu", favor);
+                            editor.commit();
+                            favoriteMenu.setText(favor);
                         }
-                        SharedPreferences.Editor editor = sharedPreferencesIn.edit();
-                        editor.putString("menu", favor);
-                        editor.commit();
-                        favoriteMenu.setText(favor);
                     }
                 });
+                favoriteCoffeeDialogFragment.getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             }
         });
         coffee_time_title.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //TODO: multiple options? how to CRUD!
                 TimePickerDialog timePickerDialog = new TimePickerDialog(SettingActivity.this, new TimePickerDialog.OnTimeSetListener(){
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int min) {
@@ -144,9 +176,48 @@ public class SettingActivity extends AppCompatActivity {
                         editor.putString("time", time);
                         editor.commit();
                         favoriteTime.setText(time);
+
+                        Intent intent = new Intent(getApplicationContext(), AlarmBroadcastReceiver.class);
+                        intent.putExtra("alarm", getSharedPreferences("caffe", MODE_PRIVATE).getBoolean("alarm", false));
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                        AlarmManager alarmManager = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+
+                        String temp;
+                        if(calendar.get(Calendar.MONTH) >= 9){
+                            temp = calendar.get(Calendar.YEAR) + "" + (calendar.get(Calendar.MONTH)+1) + "" + calendar.get(Calendar.DAY_OF_MONTH) + "" + hour + "" + min + "00";
+                        }else{
+                            temp = calendar.get(Calendar.YEAR) + "0" + (calendar.get(Calendar.MONTH)+1) + "" + calendar.get(Calendar.DAY_OF_MONTH) + "" + hour + "" + min + "00";
+                        }
+                        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+                        Date date = null;
+                        try {
+                            date = dateFormat.parse(temp);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        Calendar calendar1 = Calendar.getInstance();
+                        calendar1.setTime(date);
+
+                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar1.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
                     }
                 },calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
                 timePickerDialog.show();
+            }
+        });
+
+        checkBox = findViewById(R.id.checkBox);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(checkBox.isChecked()){
+                    SharedPreferences.Editor editor = getSharedPreferences("caffe", MODE_PRIVATE).edit();
+                    editor.putBoolean("alarm", true);
+                    editor.commit();
+                }else{
+                    SharedPreferences.Editor editor = getSharedPreferences("caffe", MODE_PRIVATE).edit();
+                    editor.putBoolean("alarm", false);
+                    editor.commit();
+                }
             }
         });
     }
