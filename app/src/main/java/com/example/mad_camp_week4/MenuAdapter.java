@@ -50,6 +50,8 @@ public class MenuAdapter extends BaseAdapter {
         coffeeName.setText(menus.get(position).getGoodName());
         if(menus.get(position).getIsFavorite()){
             favorite.setVisibility(View.VISIBLE);
+        } else {
+            favorite.setVisibility(View.GONE);
         }
 
         if(menus.get(position).getIsChecked()){

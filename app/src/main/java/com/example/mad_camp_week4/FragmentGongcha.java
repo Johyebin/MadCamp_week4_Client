@@ -63,6 +63,7 @@ public class FragmentGongcha extends Fragment {
                 }
             }
             //TODO: 커피 쏟기 컨테스트
+            //TODO: coffee_info_dialog에도 별 띄우기
            for(String id: goodIDArray){
                 //Log.wtf("GOODID", goodIDArray.toString());
                goodsDB.findGoods(id).setIsFavorite(true);
